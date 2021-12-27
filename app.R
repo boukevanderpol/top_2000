@@ -1,11 +1,11 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
 
 library(shiny)
 library(tidyverse)
@@ -28,7 +28,6 @@ songs <- sort(unique(temp$song))
 # Define UI for application that draws a histogram
 ui <- fluidPage(
     
-    
     # Application title
     titlePanel("Top 2000"),
 
@@ -40,12 +39,12 @@ ui <- fluidPage(
                         choices = artiesten,
                         selected = "Ac/Dc",
                         multiple = F
-                        )
-        ),
-        
-        #sidebarPanel("sidebar panel",
-        #             checkboxInput("do2", "Song tonen", value = F)
-        #),
+                        ),
+            checkboxInput(inputId = "checkbox_1", 
+                          label = "Song tonen", 
+                          value = F #
+                           )
+                     ),
         
         # Show a plot of the generated distribution
         mainPanel(
@@ -64,9 +63,27 @@ server <- function(input, output) {
                 
         # gegevens inlezen en ordenen
         lijst_2 <- lijst %>% 
-            dplyr::filter(artiest %in% input$artiest) # "Ac/Dc") #
-        lijst_3 <- lijst_2 %>% 
-            dplyr::filter()
+            dplyr::filter(artiest %in% input$artiest) 
+#            dplyr::filter(artiest %in% "Ac/Dc") 
+        if (input$checkbox_1 == TRUE) {
+            
+#            unieke_songs <- distinct(lijst_2, song)
+#            for (i in base::seq_along(unieke_songs$song)) {
+#                assign(x = paste0("00_", unieke_songs$song[[i]]),
+#                       value = lijst_2)
+#            }
+#            lijst <- ls(pattern = "^00")
+#            for (j in 1:i) {
+#                k <- nrow(get(lijst[[j]]))
+#            }
+            
+            lijst_3 <- lijst_2 %>% 
+                dplyr::filter()
+        } else {
+            lijst_3 <- lijst_2 %>% 
+                dplyr::mutate(song = "")
+        }
+        
         #songs <- lijst %>%
         #    dplyr::filter(artiest %in% input$artiest) %>% #,
         #                  song %in% input$lied) %>%
@@ -86,10 +103,12 @@ server <- function(input, output) {
             geom_text(data = lijst_3,
                       aes(x = jaar_lijst, 
                           y = ranglijst,
-                          label=lijst_2$song), 
+                          label=lijst_3$song), 
                       size=4, hjust=0) +
             guides(colour = "none") + 
-            ylim(0, 100)
+            ylim(0, 100) +
+            xlim(2012, 2021) + 
+            theme_minimal()
         
     })
     
