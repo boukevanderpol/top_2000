@@ -30,10 +30,10 @@ ui <- fluidPage(
     
     # Application title
     titlePanel("Top 2000"),
-
+    
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
-        sidebarPanel("sidebar panel",
+        sidebarPanel("keuze panel",
             selectInput(inputId = "artiest",
                         label = "Kies een artiest:",
                         choices = artiesten,
@@ -66,29 +66,25 @@ server <- function(input, output) {
             dplyr::filter(artiest %in% input$artiest) 
 #            dplyr::filter(artiest %in% "Ac/Dc") 
         if (input$checkbox_1 == TRUE) {
-            
-#            unieke_songs <- distinct(lijst_2, song)
-#            for (i in base::seq_along(unieke_songs$song)) {
-#                assign(x = paste0("00_", unieke_songs$song[[i]]),
-#                       value = lijst_2)
-#            }
-#            lijst <- ls(pattern = "^00")
-#            for (j in 1:i) {
-#                k <- nrow(get(lijst[[j]]))
-#            }
-            
-            lijst_3 <- lijst_2 %>% 
-                dplyr::filter()
+             
+            aaa <- dplyr::distinct(lijst_2, song)
+            bbb <- as.character(aaa$song)
+            lijst_3 <- tibble()
+            for (i in base::seq_along(bbb)) {
+                ccc <- lijst_2 %>%
+                    filter(song == bbb[[i]]) %>%
+                    #select(song, jaar_lijst) %>%
+                    unique()
+                ddd <- ccc %>%
+                    filter(jaar_lijst == base::min(jaar_lijst))
+                lijst_3 <- dplyr::bind_rows(lijst_3, ddd)
+            }
         } else {
-            lijst_3 <- lijst_2 %>% 
-                dplyr::mutate(song = "")
+            lijst_3 <- lijst %>% 
+                dplyr::filter(artiest %in% input$artiest) %>%
+                dplyr::mutate(song = NA)
         }
         
-        #songs <- lijst %>%
-        #    dplyr::filter(artiest %in% input$artiest) %>% #,
-        #                  song %in% input$lied) %>%
-        #    sort(unique(lijst$song))
-
         # grafiek
         ggplot() + 
             geom_line(data = lijst, 
@@ -100,11 +96,14 @@ server <- function(input, output) {
                           y = ranglijst,
                           colour = song),
                       size = 2) + 
-            geom_text(data = lijst_3,
-                      aes(x = jaar_lijst, 
-                          y = ranglijst,
-                          label=lijst_3$song), 
-                      size=4, hjust=0) +
+            geom_label(data = lijst_3,
+                       aes(x = jaar_lijst, 
+                           y = ranglijst,
+                           label=lijst_3$song,
+                           na.rm = T,
+                           fontface = "bold"), 
+                       check_overlap = TRUE,
+                       size=4, hjust=0) +
             guides(colour = "none") + 
             ylim(0, 100) +
             xlim(2012, 2021) + 
