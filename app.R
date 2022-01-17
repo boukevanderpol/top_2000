@@ -104,9 +104,10 @@ server <- function(input, output) {
                            fontface = "bold"), 
                        check_overlap = TRUE,
                        size=4, hjust=0) +
-            guides(colour = "none") + 
-            ylim(0, 100) +
+            guides(colour = "none") +
+            ylim(1, 100) +
             xlim(2012, 2021) + 
+            scale_y_reverse() + 
             theme_minimal()
         
     })
