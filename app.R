@@ -11,7 +11,7 @@ library(shiny)
 library(tidyverse)
 library(lubridate)
 
-
+# test
 
 # gegevens inlezen en ordenen
 lijst <- readr::read_csv2(file = "lijst.csv", 
