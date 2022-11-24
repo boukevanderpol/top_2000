@@ -34,4 +34,5 @@ lijst$jaar_song <- factor(lijst$jaar_song,
                            levels = c(1924:2030))
 lijst$artiest_song <- paste(lijst$artiest, "-", lijst$titel)
 
-
+# doorsnedes ------------------------------------------
+#artiest_lijst <- distinct(lijst, artiest)

@@ -24,6 +24,7 @@ laatste_jaar_top_2000 <- 2021
 
 source("./functies/functies_laden.R")
 source("./functies/functies_grafieken.R")
+source("./functies/functies.R")
 #source("./functies/functies_box.R")
 
 
@@ -52,7 +53,7 @@ body <- dashboardBody(
             ),
     # rijk ministeries -------------------
     tabItem(tabName = "lijst",
-            h2("Rijk & ministeries - t/m augustus 2022"),
+            h2("De lijst over de jaren heen"),
             fluidRow(
               #valueBoxOutput(
               #  outputId = "valuebox_zv_percentage",
@@ -68,12 +69,25 @@ body <- dashboardBody(
               title = "Inputs", #status = "warning",
               background = "black",
               width = 3,
-              radioButtons(inputId = "onderdelen_2",
-                           label   = "Organisatie:", 
-                           c("Het Rijk" = "Rijk",
-                             "Ministerie van BZK" =  "BZK", 
-                             "Ministerie van BuZa" = "BuZa"),
-                           selected = "Rijk"),
+              selectInput(inputId = "jaar_1", label = "Vanaf jaar",
+                          choices = f_jaren(), selected = 2018),
+              selectInput(inputId = "jaar_2", label = "t/m jaar",
+                          choices = f_jaren(), selected = 2021)#,
+              #selectInput(inputId = "positie_1", label = "Vanaf positie",
+              #            choices = f_posities(), selected = 1),
+              #selectInput(inputId = "positie_2", label = "t/m positie",
+              #            choices = f_posities(), selected = 200),
+              #selectInput(inputId = "artiest_keuze", label = "artiest",
+              #            choices = f_artiesten_selecteren(
+              #              x_waarde_min = 2003, x_waarde_max = 2021, 
+              #              y_waarde_min = 1, y_waarde_max = 500),
+              #            selected = "AC/DC")
+#              radioButtons(inputId = "onderdelen_2",
+#                           label   = "Organisatie:", 
+#                           c("Het Rijk" = "Rijk",
+#                             "Ministerie van BZK" =  "BZK", 
+#                             "Ministerie van BuZa" = "BuZa"),
+#                           selected = "Rijk"),
 #              radioButtons(inputId  = "dag_week_maand_2", 
 #                           label    = "Periode (zieken / ziekmeldingen):", # voor de presentatie van het aantal zieken en ziekmeldingen:", 
 #                           selected = "week", choiceNames = list(
@@ -81,23 +95,12 @@ body <- dashboardBody(
 #                           choiceValues = list("dag", "week", "maand"))
             ),
             fluidRow(
-              tabBox(
-                title = "",
+              box(
+                title = "overzicht lijst", status = "primary",
+                solidHeader = TRUE,
                 width = 8,
-                tabPanel(
-                  title = "ziekteverzuimpercentage"#, 
-                  #splitLayout(cellWidths = c("42%", "57%"),
-                  #            plotOutput("g_zv_alg"),
-                  #            plotOutput("g_zv_duur"))
-                ),
-                tabPanel(
-                  title = "aantal zieken"#,
-                  #plotOutput("g_zieken")
-                ),
-                tabPanel(
-                  title = "aantal ziekmeldingen"#,
-                  #plotOutput("g_ziekmeldingen")
-                ),
+                br(" "),
+                plotOutput("graf_lijnen")
               )
             ),
     ),
@@ -175,38 +178,16 @@ server <- function(input, output, session) {
   #  )
   #})
     
-  # g_zv_alg -----------------------------------------    
-  #grafiek_zv_alg <- reactive(g_verzuim_alg(afk = input$onderdelen_2))
-  #output$g_zv_alg <- renderPlot({grafiek_zv_alg()}, res = 96)
-  
-  # g_zv_duur ----------------------------------------    
-  #grafiek_zv_duur <- reactive(g_verzuim_duur(afk = input$onderdelen_2))
-  #output$g_zv_duur <- renderPlot({grafiek_zv_duur()}, res = 96)
-  
-  # g_zieken -----------------------------------------
-  #grafiek_zieken_onderdelen <- reactive(g_zieken(
-  #  afk = input$onderdelen_2,
-  #  periode = input$dag_week_maand_2))
-  #output$g_zieken <- renderPlot({grafiek_zieken_onderdelen()},
-  #                              res = 96)
-  # g_ziekmeldingen ----------------------------------
-  #grafiek_ziekmeldingen_onderdelen <- reactive(g_ziekmeldingen(
-  #  afk = input$onderdelen_2,
-  #  periode = input$dag_week_maand_2))
-  #output$g_ziekmeldingen <- renderPlot({grafiek_ziekmeldingen_onderdelen()}, 
-  #                                     res = 96)
-  # g_vergelijken ------------------------------------
-  #grafiek_vergelijken_verzuim_alg <- reactive(
-  #  g_vergelijken_verzuim_alg(afk_3a = input$organisatie_3a,
-  #                            afk_3b = input$organisatie_3b))
-  #output$g_vergelijken_verzuim_alg <- renderPlot(
-  #  {grafiek_vergelijken_verzuim_alg()}, res = 96)
-  # g_voorspelling -----------------------------------
-  #grafiek_voorspelling_a <- reactive(g_voorspellen_a(
-  #  aantal_maanden = input$aantal_mnd_4,
-  #  afk = input$onderdelen_4))
-  #output$g_voorspelling <- renderPlot({grafiek_voorspelling_a()}, 
-  #                                    res = 96)
+  # grafiek_lijnen -----------------------------------
+  grafiek_lijnen <- reactive(g_lijne2(
+    x_waarde_min = input$jaar_1,
+    x_waarde_max = input$jaar_2,
+    #y_waarde_min = input$positie_1, 
+    #y_waarde_max = input$positie_2,
+    artiest1     = input$artiest_keuze
+    ))
+  output$graf_lijnen <- renderPlot({grafiek_lijnen()}, 
+                                      res = 96)
   # tekst_a ------------------------------------------
   #grafiek_voorspelling_b <- reactive(g_voorspellen_b(
   #  aantal_maanden = input$aantal_mnd_4,
