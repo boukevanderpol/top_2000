@@ -53,7 +53,7 @@ body <- dashboardBody(
             ),
     # rijk ministeries -------------------
     tabItem(tabName = "lijst",
-            h2("De lijst over de jaren heen"),
+            h2("De lijst door de jaren heen"),
             fluidRow(
               #valueBoxOutput(
               #  outputId = "valuebox_zv_percentage",
@@ -72,27 +72,17 @@ body <- dashboardBody(
               selectInput(inputId = "jaar_1", label = "Vanaf jaar",
                           choices = f_jaren(), selected = 2018),
               selectInput(inputId = "jaar_2", label = "t/m jaar",
-                          choices = f_jaren(), selected = 2021)#,
-              #selectInput(inputId = "positie_1", label = "Vanaf positie",
-              #            choices = f_posities(), selected = 1),
-              #selectInput(inputId = "positie_2", label = "t/m positie",
-              #            choices = f_posities(), selected = 200),
-              #selectInput(inputId = "artiest_keuze", label = "artiest",
-              #            choices = f_artiesten_selecteren(
-              #              x_waarde_min = 2003, x_waarde_max = 2021, 
-              #              y_waarde_min = 1, y_waarde_max = 500),
-              #            selected = "AC/DC")
-#              radioButtons(inputId = "onderdelen_2",
-#                           label   = "Organisatie:", 
-#                           c("Het Rijk" = "Rijk",
-#                             "Ministerie van BZK" =  "BZK", 
-#                             "Ministerie van BuZa" = "BuZa"),
-#                           selected = "Rijk"),
-#              radioButtons(inputId  = "dag_week_maand_2", 
-#                           label    = "Periode (zieken / ziekmeldingen):", # voor de presentatie van het aantal zieken en ziekmeldingen:", 
-#                           selected = "week", choiceNames = list(
-#                             "dag", "week", "maand"), 
-#                           choiceValues = list("dag", "week", "maand"))
+                          choices = f_jaren(), 
+                          selected = 2021),
+              selectInput(inputId = "positie_1", label = "Vanaf positie",
+                          choices = f_posities(), selected = 1),
+              selectInput(inputId = "positie_2", label = "t/m positie",
+                          choices = f_posities(), selected = 200),
+              selectInput(inputId = "artiest_keuze", label = "artiest",
+                          choices = f_artiesten_selecteren(
+                            x_waarde_min = 2003, x_waarde_max = 2021, 
+                            y_waarde_min = 1, y_waarde_max = 500),
+                          selected = "AC/DC")
             ),
             fluidRow(
               box(
@@ -179,7 +169,7 @@ server <- function(input, output, session) {
   #})
     
   # grafiek_lijnen -----------------------------------
-  grafiek_lijnen <- reactive(g_lijne2(
+  grafiek_lijnen <- reactive(g_lijnen(
     x_waarde_min = input$jaar_1,
     x_waarde_max = input$jaar_2,
     #y_waarde_min = input$positie_1, 

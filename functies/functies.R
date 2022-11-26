@@ -29,9 +29,10 @@ f_artiesten_selecteren <- function(x_waarde_min = 1999,
 
 
 # selectie van jaren --------------------------------------
-f_jaren <- function() {
-  f_geg <- distinct(lijst, jaar_lijst)
-  f_geg <- as.character(f_geg$jaar_lijst)
+f_jaren <- function(vanaf_jaar = 1999) {
+  f_geg <- lijst %>% filter(jaar_lijst >= vanaf_jaar)
+  f_geg <- distinct(f_geg, jaar_lijst)
+  f_geg <- as.double(f_geg$jaar_lijst)
   return(f_geg)
 }
 
