@@ -69,19 +69,13 @@ body <- dashboardBody(
               title = "Inputs", #status = "warning",
               background = "black",
               width = 3,
-              selectInput(inputId = "jaar_1", label = "Vanaf jaar",
-                          choices = f_jaren(), selected = 2018),
-              selectInput(inputId = "jaar_2", label = "t/m jaar",
-                          choices = f_jaren(), 
-                          selected = 2021),
-              selectInput(inputId = "positie_1", label = "Vanaf positie",
-                          choices = f_posities(), selected = 1),
-              selectInput(inputId = "positie_2", label = "t/m positie",
-                          choices = f_posities(), selected = 200),
+              sliderInput(inputId = "vanaf_jaar",
+                          label = "Vanaf welke jaar:",
+                          min = 1999,
+                          max = laatste_jaar_top_2000 - 1,
+                          value = 2012),
               selectInput(inputId = "artiest_keuze", label = "artiest",
-                          choices = f_artiesten_selecteren(
-                            x_waarde_min = 2003, x_waarde_max = 2021, 
-                            y_waarde_min = 1, y_waarde_max = 500),
+                          choices = f_artiesten_selecteren(),
                           selected = "AC/DC")
             ),
             fluidRow(
@@ -170,14 +164,11 @@ server <- function(input, output, session) {
     
   # grafiek_lijnen -----------------------------------
   grafiek_lijnen <- reactive(g_lijnen(
-    x_waarde_min = input$jaar_1,
-    x_waarde_max = input$jaar_2,
-    #y_waarde_min = input$positie_1, 
-    #y_waarde_max = input$positie_2,
+    x_waarde_min = input$vanaf_jaar,
     artiest1     = input$artiest_keuze
     ))
   output$graf_lijnen <- renderPlot({grafiek_lijnen()}, 
-                                      res = 96)
+                                   res = 96)
   # tekst_a ------------------------------------------
   #grafiek_voorspelling_b <- reactive(g_voorspellen_b(
   #  aantal_maanden = input$aantal_mnd_4,
