@@ -16,21 +16,31 @@ g_lijnen1 <- function() {
 
 
 g_lijnen <- function(x_waarde_min = 1999,
-                     artiest1 = "U2"#, # "Nick Cave & The Bad Seeds", #"Falco", #
+                     artiest1 = "U2", # "Nick Cave & The Bad Seeds", #"Falco", #
+                     song1 = "(leeg)"
                      ) {
   
   # gegevens samenstellen
-  g_geg <- lijst %>%
-    filter(jaar_lijst >= x_waarde_min,
-           artiest == artiest1)
-  temp1 <- distinct(g_geg, titel)
-  rij_mediaan <- tibble()
+  if (song1 == "(leeg)") {
+    g_geg <- lijst %>%
+      filter(jaar_lijst >= x_waarde_min,
+             artiest == artiest1)
+    temp1 <- distinct(g_geg, titel)
+    rij_mediaan <- tibble()
+  } else {
+    g_geg <- lijst %>%
+      filter(jaar_lijst >= x_waarde_min,
+             artiest == artiest1,
+             titel == song1)
+    temp1 <- distinct(g_geg, titel)
+    rij_mediaan <- tibble()
+  }
 
-    for (i in seq_along(temp1$titel)) {
-    temp2 <- g_geg %>% 
-      filter(titel == temp1$titel[[i]]) %>%
-      arrange(jaar_lijst)
-    
+  for (i in seq_along(temp1$titel)) {
+  temp2 <- g_geg %>% 
+    filter(titel == temp1$titel[[i]]) %>%
+    arrange(jaar_lijst)
+  
     if((length(temp2$jaar_lijst) %% 2) == 0) {
       # even aantal observaties
       rij_mediaan_temp <- temp2 %>%
@@ -40,8 +50,7 @@ g_lijnen <- function(x_waarde_min = 1999,
       rij_mediaan_temp <- temp2 %>%
         filter(jaar_lijst == median(temp2$jaar_lijst))
     }
-    rij_mediaan <- bind_rows(rij_mediaan, rij_mediaan_temp)
-    
+  rij_mediaan <- bind_rows(rij_mediaan, rij_mediaan_temp)
   }
   
   # grafiek samenstellen

@@ -78,7 +78,8 @@ body <- dashboardBody(
                           choices = f_artiesten_selecteren(),
                           selected = "AC/DC"),
               selectInput(inputId = "artiest_song_keuze", label = "song",
-                          choices = f_artiestsong_selecteren())
+                          choices = f_artiestsong_selecteren(),
+                          selected = "(leeg)")
             ),
             fluidRow(
               box(
@@ -163,19 +164,32 @@ server <- function(input, output, session) {
   #    icon = icon("rectangle-list")
   #  )
   #})
-    
-  # grafiek_lijnen -----------------------------------
-  grafiek_lijnen <- reactive(g_lijnen(
-    x_waarde_min = input$vanaf_jaar,
-    artiest1     = input$artiest_keuze
-    ))
-  output$graf_lijnen <- renderPlot({grafiek_lijnen()}, 
-                                   res = 96)
+  
+  # ---------------------------------------
+  #observeEvent(input$artiest_keuze, {
+  #  updateSelectInput(session=session,
+  #                    inputId = "artiest_keuze",
+  #                    choices = f_artiesten_selecteren(
+  #                      jaar1 = input$vanaf_jaar)
+  #                    )
+  #  })
   observeEvent(input$artiest_keuze, {
     updateSelectInput(session=session,
                       inputId = "artiest_song_keuze",
-                      choices = setdiff(lijst$titel, input$artiest_keuze))
+                      choices = f_artiestsong_selecteren(
+                        jaar1 = input$vanaf_jaar,
+                        artiest1 = input$artiest_keuze)
+                      )
   })
+  # grafiek_lijnen -----------------------------------
+  grafiek_lijnen <- reactive(g_lijnen(
+    x_waarde_min = input$vanaf_jaar,
+    artiest1     = input$artiest_keuze,
+    song1        = input$artiest_song_keuze
+    ))
+  output$graf_lijnen <- renderPlot({grafiek_lijnen()}, 
+                                   res = 96)
+  
   
 
   
