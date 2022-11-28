@@ -19,6 +19,16 @@ f_artiesten_selecteren <- function() {
 
 
 
+f_artiestsong_selecteren <- function() {
+  
+  f_geg <- distinct(lijst, titel)
+  f_geg <- f_geg %>% arrange(titel)
+  f_geg <- as.character(f_geg$titel)  
+  return(f_geg)
+}
+
+
+
 # selectie van jaren --------------------------------------
 f_jaren <- function(vanaf_jaar = 1999) {
   f_geg <- lijst %>% filter(jaar_lijst >= vanaf_jaar)

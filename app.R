@@ -76,7 +76,9 @@ body <- dashboardBody(
                           value = 2012),
               selectInput(inputId = "artiest_keuze", label = "artiest",
                           choices = f_artiesten_selecteren(),
-                          selected = "AC/DC")
+                          selected = "AC/DC"),
+              selectInput(inputId = "artiest_song_keuze", label = "song",
+                          choices = f_artiestsong_selecteren())
             ),
             fluidRow(
               box(
@@ -169,6 +171,14 @@ server <- function(input, output, session) {
     ))
   output$graf_lijnen <- renderPlot({grafiek_lijnen()}, 
                                    res = 96)
+  observeEvent(input$artiest_keuze, {
+    updateSelectInput(session=session,
+                      inputId = "artiest_song_keuze",
+                      choices = setdiff(lijst$titel, input$artiest_keuze))
+  })
+  
+
+  
   # tekst_a ------------------------------------------
   #grafiek_voorspelling_b <- reactive(g_voorspellen_b(
   #  aantal_maanden = input$aantal_mnd_4,
