@@ -13,10 +13,10 @@ suppressPackageStartupMessages(library(shinydashboard))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(readxl))
 suppressPackageStartupMessages(library(tsibble))
-suppressPackageStartupMessages(library(tsibbledata))
-suppressPackageStartupMessages(library(fabletools))
-suppressPackageStartupMessages(library(fable))
-suppressPackageStartupMessages(library(feasts))
+#suppressPackageStartupMessages(library(tsibbledata))
+#suppressPackageStartupMessages(library(fabletools))
+#suppressPackageStartupMessages(library(fable))
+#suppressPackageStartupMessages(library(feasts))
 suppressPackageStartupMessages(library(urca))
 suppressPackageStartupMessages(library(ggrepel))
 
@@ -45,10 +45,9 @@ body <- dashboardBody(
             h2("Intro"),
             br(" "),
             hr(style = "border-top: 1px solid #000000;"),
-            p("Beste lezer,"),
+            p("... ,"),
             br(" "),
-            p("Hierbij ga ik je vervelen met het resultaat van mijn 
-               hernieuwde kennismaking van het visualisatie tool Shiny. "),
+            p("bla bla bla bla - intro tekst "),
             hr(style = "border-top: 1px solid #000000;")
             ),
     # rijk ministeries -------------------
@@ -69,15 +68,15 @@ body <- dashboardBody(
               title = "Inputs", #status = "warning",
               background = "black",
               width = 3,
-              sliderInput(inputId = "vanaf_jaar",
-                          label = "Vanaf welke jaar:",
-                          min = 1999,
-                          max = laatste_jaar_top_2000 - 1,
-                          value = 2012),
-              selectInput(inputId = "artiest_keuze", label = "artiest",
+              #sliderInput(inputId = "vanaf_jaar",
+              #            label = "Vanaf welke jaar:",
+              #            min = 1999,
+              #            max = laatste_jaar_top_2000 - 1,
+              #            value = 2012),
+              selectizeInput(inputId = "artiest_keuze", label = "artiest",
                           choices = f_artiesten_selecteren(),
                           selected = "AC/DC"),
-              selectInput(inputId = "artiest_song_keuze", label = "song",
+              selectizeInput(inputId = "artiest_song_keuze", label = "song",
                           choices = f_artiestsong_selecteren(),
                           selected = "(leeg)")
             ),
@@ -98,20 +97,15 @@ body <- dashboardBody(
               title = "Inputs",
               background = "black",
               width = 3,
-              sliderInput(inputId = "aantal_mnd_4",
-                          label = "Hoeveel maanden voorspellen:",
-                          min = 1,
-                          max = 16,
-                          value = 5),
               radioButtons(inputId = "onderdelen_4",
-                           label   = "Organisatie:", 
-                           c("Het Rijk" = "Rijk",
-                             "Ministerie van BZK" =  "BZK", 
-                             "Ministerie van BuZa" = "BuZa"),
-                           selected = "Rijk")
+                           label   = "artiest:", 
+                           c("item 1" = "item1",
+                             "item 2" =  "item2", 
+                             "item 3" = "item3"),
+                           selected = "item1")
             ),
             box(
-              title = "Voorspelling obv ARIMA model", status = "primary",
+              title = "Voorspelling obv xxx model", status = "primary",
               solidHeader = TRUE,
               width = 8,
               br(" "),
@@ -174,16 +168,16 @@ server <- function(input, output, session) {
   #                    )
   #  })
   observeEvent(input$artiest_keuze, {
-    updateSelectInput(session=session,
-                      inputId = "artiest_song_keuze",
-                      choices = f_artiestsong_selecteren(
-                        jaar1 = input$vanaf_jaar,
-                        artiest1 = input$artiest_keuze)
-                      )
+    updateSelectizeInput(session=session,
+                         inputId = "artiest_song_keuze",
+                         choices = f_artiestsong_selecteren(
+                           #jaar1 = input$vanaf_jaar,
+                           artiest1 = input$artiest_keuze)
+                         )
   })
   # grafiek_lijnen -----------------------------------
   grafiek_lijnen <- reactive(g_lijnen(
-    x_waarde_min = input$vanaf_jaar,
+    x_waarde_min = 1999, #input$vanaf_jaar,
     artiest1     = input$artiest_keuze,
     song1        = input$artiest_song_keuze
     ))

@@ -62,9 +62,14 @@ g_lijnen <- function(x_waarde_min = 1999,
                   colour = artiest_song, 
                   group = artiest_song),
               linewidth = 2) +
+    geom_point(data = g_geg, 
+               aes(x = jaar, 
+                   y = positie, 
+                   colour = artiest_song, 
+                   group = artiest_song)) +
     geom_label_repel(data = rij_mediaan,
                      aes(x = jaar, 
-                         y = positie + ((max(g_geg$positie) - min(g_geg$positie)) * 0.01),
+                         y = positie + ((max(positie) - min(positie)) * 0.01),
                          label = titel),
                      size = 4) + 
     #geom_text(data = rij_mediaan,
@@ -74,7 +79,7 @@ g_lijnen <- function(x_waarde_min = 1999,
     #          vjust = 0,
     #          colour = "black",
     #          position = position_nudge(x = 1, y = (max(g_geg$positie) - min(g_geg$positie)) * 0.01)) + 
-    scale_y_reverse() +
+    scale_y_reverse(limits = c(2000, 1)) +
     theme_minimal() + 
     theme(legend.position = "none", 
           axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))

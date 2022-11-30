@@ -9,7 +9,7 @@
 
 # selectie van de artiesten in de -------------------------
 #    het jaar-slot en posities-slot
-f_artiesten_selecteren <- function(jaar1 = 2012) {
+f_artiesten_selecteren <- function(jaar1 = 1999) {
   
   #f_geg <- lijst %>%
   #  filter(jaar_lijst >= jaar1)
@@ -22,10 +22,10 @@ f_artiesten_selecteren <- function(jaar1 = 2012) {
 
 
 
-f_artiestsong_selecteren <- function(jaar1 = 2012,
+f_artiestsong_selecteren <- function(jaar1 = 1999,
                                      artiest1 = "Falco") {
   f_geg <- lijst %>%
-    filter(jaar_lijst >= jaar1,
+    filter(#jaar_lijst >= jaar1,
            artiest == artiest1)
   f_geg <- distinct(f_geg, titel)
   f_geg <- f_geg %>% arrange(titel)
