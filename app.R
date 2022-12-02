@@ -25,7 +25,7 @@ laatste_jaar_top_2000 <- 2021
 source("./functies/functies_laden.R")
 source("./functies/functies_grafieken.R")
 source("./functies/functies.R")
-#source("./functies/functies_box.R")
+source("./functies/functies_box.R")
 
 
 header <- dashboardHeader(title = "Top 2000")
@@ -53,17 +53,17 @@ body <- dashboardBody(
     # rijk ministeries -------------------
     tabItem(tabName = "lijst",
             h2("De lijst door de jaren heen"),
-            fluidRow(
-              #valueBoxOutput(
-              #  outputId = "valuebox_zv_percentage",
-              #  width = 3),
+            #fluidRow(
+            #  valueBoxOutput(
+            #    outputId = "valuebox_hoogste_positie",
+            #    width = 3),
               #valueBoxOutput(
               #  outputId = "valuebox_aantal_zieken",
               #  width = 4),
               #valueBoxOutput(
               #  outputId = "valuebox_aantal_ziekmeldingen",
               #  width = 4),
-            ),
+            #),
             box(
               title = "Inputs", #status = "warning",
               background = "black",
@@ -87,7 +87,11 @@ body <- dashboardBody(
                 width = 8,
                 br(" "),
                 plotOutput("graf_lijnen")
-              )
+              ),
+              valueBoxOutput(
+                outputId = "valuebox_hoogste_positie",
+                width = 11)
+              
             ),
     ),
     # voorspellen ------------------------
@@ -125,17 +129,19 @@ ui <- dashboardPage(header, sidebar, body)
 server <- function(input, output, session) {
   
   # valuebox_zv_percentage ---------------------------
-  #valuebox_zv_perc <- reactive(vb_zv_perc(afk = input$onderdelen_2))
+  valuebox_hoogste_positie <- reactive(
+    vb_hoogste_positie(artiest1 = input$artiest_keuze,
+                       song1 = input$artiest_song_keuze))
   #valuebox_zv_kleur <- reactive(vb_zv_kleur(afk = input$onderdelen_2))
   #valuebox_zv_icoon <- reactive(vb_zv_icoon(afk = input$onderdelen_2))
-  #output$valuebox_zv_percentage <- renderValueBox({
-  #  valueBox(
-  #    value = paste0(valuebox_zv_perc(),"%"),
-  #    subtitle = "huidig zv%",
-  #    color = valuebox_zv_kleur(),
-  #    icon = icon(valuebox_zv_icoon())
-  #  )
-  #})
+  output$valuebox_hoogste_positie <- renderValueBox({
+    valueBox(
+      value = valuebox_hoogste_positie(),
+      subtitle = "hoogste positie - song - jaar",
+      color = "green",          #valuebox_zv_kleur(),
+      icon = icon("arrow-up")   #valuebox_zv_icoon())
+    )
+  })
 
   # valuebox_aantal_zieken ---------------------------
   #valuebox_aantal_z <- reactive(vb_aantal_zieken(afk = input$onderdelen_2))

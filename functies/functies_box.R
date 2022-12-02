@@ -8,17 +8,47 @@
 # ===============================================================
 
 
-vb_zv_perc <- function(afk = "AZ") {
+vb_hoogste_positie <- function(artiest1 = "Queen", # "Nick Cave & The Bad Seeds", #"Falco", #
+                               song1 = "Bohemian Rhapsody"){#  "(leeg)") {
   
-  geg_tabel_lj <- verzuim %>%
-    filter(onderwerp %in% c("zv%"),
-           org_afk %in% afk,
-           jaar %in% c("2022"))
-  geg_tabel_lj$maand_nr <- as.integer(geg_tabel_lj$maand_nr)
-  zv_perc <- geg_tabel_lj$aantal[max(geg_tabel_lj$maand_nr)]
-  zv_perc <- round(zv_perc, 2)
+  if (song1 == "(leeg)") {
+
+    box_geg <- lijst %>%
+      filter(met_the == artiest1)
+
+  } else {
+
+    box_geg <- lijst %>%
+      filter(met_the == artiest1,
+             titel == song1)
+  }
   
-  return(zv_perc)
+  hoogste_positie <- min(box_geg$positie)
+  song2 <- box_geg %>%
+    filter(positie == hoogste_positie)
+  
+  if (nrow(song2) == 1) {
+    naam_song = song2$titel[[1]]
+    jaar_song = song2$jaar[[1]]
+  } else if (nrow(song2) == 2) {
+    naam_song = song2$titel[[1]]
+    jaar_song1 = song2$jaar[[1]]
+    jaar_song2 = song2$jaar[[2]]
+    jaar_song = paste0(jaar_song1, " & ", jaar_song2)
+  } else {
+    naam_song = song2$titel[[1]]
+    jaar_song1 = song2$jaar[[1]]
+    jaar_song2 = song2$jaar[[2]]
+    jaar_song = paste0(jaar_song1, ", ",
+                       jaar_song2, ", ", "etc.")
+    
+  }
+  
+  tekst <- paste0(hoogste_positie," - ",
+                  naam_song, " - ",
+                  jaar_song)
+  
+  return(tekst)
 
 }
 

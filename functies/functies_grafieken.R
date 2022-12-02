@@ -24,13 +24,13 @@ g_lijnen <- function(x_waarde_min = 1999,
   if (song1 == "(leeg)") {
     g_geg <- lijst %>%
       filter(jaar_lijst >= x_waarde_min,
-             artiest == artiest1)
+             met_the == artiest1)
     temp1 <- distinct(g_geg, titel)
     rij_mediaan <- tibble()
   } else {
     g_geg <- lijst %>%
       filter(jaar_lijst >= x_waarde_min,
-             artiest == artiest1,
+             met_the == artiest1,
              titel == song1)
     temp1 <- distinct(g_geg, titel)
     rij_mediaan <- tibble()
