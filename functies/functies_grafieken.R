@@ -8,15 +8,9 @@
 # ===============================================================
 
 
-g_lijnen1 <- function() {
-  geg <- mtcars %>% filter(wt > 3)
-  ggplot(data = geg, aes(x = mpg, y = disp)) + 
-    geom_point()
-}
-
 
 g_lijnen <- function(x_waarde_min = 1999,
-                     artiest1 = "U2", # "Nick Cave & The Bad Seeds", #"Falco", #
+                     artiest1 = "The Cure", # "Nick Cave & The Bad Seeds", #"Falco", #
                      song1 = "(leeg)"
                      ) {
   

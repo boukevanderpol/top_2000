@@ -32,7 +32,7 @@ lijst$positie_factor <- factor(lijst$positie,
                                levels = c(1:2000))
 lijst$jaar_song <- factor(lijst$jaar_song, 
                            levels = c(1924:2030))
-lijst$artiest_song <- paste(lijst$artiest, "-", lijst$titel)
+lijst$artiest_song <- paste(lijst$met_the, "-", lijst$titel)
 
 # doorsnedes ------------------------------------------
 #artiest_lijst <- distinct(lijst, artiest)

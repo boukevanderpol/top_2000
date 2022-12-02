@@ -53,17 +53,6 @@ body <- dashboardBody(
     # rijk ministeries -------------------
     tabItem(tabName = "lijst",
             h2("De lijst door de jaren heen"),
-            #fluidRow(
-            #  valueBoxOutput(
-            #    outputId = "valuebox_hoogste_positie",
-            #    width = 3),
-              #valueBoxOutput(
-              #  outputId = "valuebox_aantal_zieken",
-              #  width = 4),
-              #valueBoxOutput(
-              #  outputId = "valuebox_aantal_ziekmeldingen",
-              #  width = 4),
-            #),
             box(
               title = "Inputs", #status = "warning",
               background = "black",
@@ -96,27 +85,26 @@ body <- dashboardBody(
     ),
     # voorspellen ------------------------
     tabItem(tabName = "voorspellen",
-            h2("Voorspellen"),
+            #h2("Voorspellen"),
+            #box(
+            #  title = "Inputs",
+            #  background = "black",
+            #  width = 3,
+            #  radioButtons(inputId = "onderdelen_4",
+            #               label   = "artiest:", 
+            #               c("item 1" = "item1",
+            #                 "item 2" =  "item2", 
+            #                 "item 3" = "item3"),
+            #               selected = "item1")
+            #),
             box(
-              title = "Inputs",
-              background = "black",
-              width = 3,
-              radioButtons(inputId = "onderdelen_4",
-                           label   = "artiest:", 
-                           c("item 1" = "item1",
-                             "item 2" =  "item2", 
-                             "item 3" = "item3"),
-                           selected = "item1")
-            ),
-            box(
-              title = "Voorspelling obv xxx model", status = "primary",
+              title = "Voorspelling ...", status = "primary",
               solidHeader = TRUE,
               width = 8,
               br(" "),
               #plotOutput("g_voorspelling"),
               br(" "),
-              p("Voor de liefhebbers en transparantie zijn de specificaties 
-                 van het gebruikte model hieronder toegevoegd:")#,
+              p("In aanbouw.....")#,
               #verbatimTextOutput("tekst_a")
             ))
   )
