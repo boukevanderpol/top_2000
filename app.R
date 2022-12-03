@@ -42,12 +42,18 @@ body <- dashboardBody(
   tabItems(
     # intro ---------------------------
     tabItem(tabName = "intro",
-            h2("Intro"),
-            br(" "),
+            #h2("Intro"),
+            #br(" "),
             hr(style = "border-top: 1px solid #000000;"),
-            p("... ,"),
+            p("Beste mensen,"),
             br(" "),
-            p("bla bla bla bla - intro tekst "),
+            p("Op het volgende tabblad kan je zien op welke wijze een artiest 
+              met zijn songs door de jaren in de top 2000 heeft gestaan."),
+            #br(" "),
+            p("Het is mogelijk dat nog ergens een foutje in de data zit of dat een 
+              functionaliteit een bug heeft. Als je zoiets ziet, stuur dan 
+              een mail aan mij --> boukevanderpol ad gmail.com. Dan kijk ik 
+              ernaar en los ik het op voor volgend jaar. "),
             hr(style = "border-top: 1px solid #000000;")
             ),
     # rijk ministeries -------------------
@@ -64,7 +70,7 @@ body <- dashboardBody(
               #            value = 2012),
               selectizeInput(inputId = "artiest_keuze", label = "artiest",
                           choices = f_artiesten_selecteren(),
-                          selected = "AC/DC"),
+                          selected = "Chris Isaak"),
               selectizeInput(inputId = "artiest_song_keuze", label = "song",
                           choices = f_artiestsong_selecteren(),
                           selected = "(leeg)")
@@ -120,8 +126,7 @@ server <- function(input, output, session) {
   valuebox_hoogste_positie <- reactive(
     vb_hoogste_positie(artiest1 = input$artiest_keuze,
                        song1 = input$artiest_song_keuze))
-  #valuebox_zv_kleur <- reactive(vb_zv_kleur(afk = input$onderdelen_2))
-  #valuebox_zv_icoon <- reactive(vb_zv_icoon(afk = input$onderdelen_2))
+  
   output$valuebox_hoogste_positie <- renderValueBox({
     valueBox(
       value = valuebox_hoogste_positie(),
@@ -131,36 +136,6 @@ server <- function(input, output, session) {
     )
   })
 
-  # valuebox_aantal_zieken ---------------------------
-  #valuebox_aantal_z <- reactive(vb_aantal_zieken(afk = input$onderdelen_2))
-  #output$valuebox_aantal_zieken <- renderValueBox({
-  #  valueBox(
-  #    value = valuebox_aantal_z(),
-  #    subtitle = "huidig aantal zieken",
-  #    color = "yellow",
-  #    icon = icon("user")
-  #  )
-  #})
-
-  # valuebox_aantal_ziekmeldingen ---------------------------
-  #valuebox_aantal_zm <- reactive(vb_aantal_ziekmeldingen(afk = input$onderdelen_2))
-  #output$valuebox_aantal_ziekmeldingen <- renderValueBox({
-  #  valueBox(
-  #    value = valuebox_aantal_zm(),
-  #    subtitle = "aantal ziekmeldingen laatste week",
-  #    color = "blue",
-  #    icon = icon("rectangle-list")
-  #  )
-  #})
-  
-  # ---------------------------------------
-  #observeEvent(input$artiest_keuze, {
-  #  updateSelectInput(session=session,
-  #                    inputId = "artiest_keuze",
-  #                    choices = f_artiesten_selecteren(
-  #                      jaar1 = input$vanaf_jaar)
-  #                    )
-  #  })
   observeEvent(input$artiest_keuze, {
     updateSelectizeInput(session=session,
                          inputId = "artiest_song_keuze",

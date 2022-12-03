@@ -26,7 +26,7 @@ f_artiestsong_selecteren <- function(jaar1 = 1999,
                                      artiest1 = "Falco") {
   f_geg <- lijst %>%
     filter(#jaar_lijst >= jaar1,
-           artiest == artiest1)
+           met_the == artiest1)
   f_geg <- distinct(f_geg, titel)
   f_geg <- f_geg %>% arrange(titel)
   f_geg <- as.character(f_geg$titel)

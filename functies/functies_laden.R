@@ -26,6 +26,12 @@ f_laden_lijst <- function(x) {
 lijst <- f_laden_lijst("./gegevens/top2000_tm2021.xlsx")
 
 lijst <- lijst %>% select(-c("zonder_formule", "met_formule", "nr"))
+
+lijst$met_the <- stringr::str_to_lower(lijst$met_the)
+lijst$met_the <- stringr::str_to_title(lijst$met_the)
+lijst$titel <- stringr::str_to_lower(lijst$titel)
+lijst$titel <- stringr::str_to_title(lijst$titel)
+
 lijst$jaar <- factor(lijst$jaar_lijst, 
                      levels = c(1999:2021))
 lijst$positie_factor <- factor(lijst$positie, 
